@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [도전과제] 발랑
+## 목표
+> 총 12시간 동안 요구사항을 모두 충족하는 FE 서비스의 개발 및 배포를 완료 목표
+- 레퍼런스: https://client.ballang.yoojinyong.com
 
-## Getting Started
+## 요구사항
+### 1. 기술 스택
+- Next.js - App Router
+- Typescript
+- Tailwind CSS
+- Axios
+- Context API
+- Tanstack Query
+-> 이외의 라이브러리들도 자유롭게 사용해도 괜찮으나, 위 나열된 기술 스택들은 반드시 모두 사용해야함.
 
-First, run the development server:
+### 2. 페이지 별 기능
+1. 홈페이지 - SSR(SSG)
+- [ ] 전체 상품 목록을 보여주어얗 한다.
+- [ ] 서버 사이드에서 60초에 한 번씩 새롭게 Static Site를 Generate해야 한다.
+2. 브랜드 페이지 - SSR
+- [ ] 전체 브랜드와 브랜드별 상품을 보여주어야 한다.
+- [ ] `ALL` 이 선택되어 있을 경우 전체 상품을 보여주어야 한다.
+- [ ] 특정 브랜드가 선택되었을 경우에는 해당 브랜드의 상품만을 보여주어야 한다.
+- [ ] 브랜드 페이지는 `/brands` 하나의 라우트만 사용해야 하고 브랜드별 전환은 쿼리스트링을 활용해야 한다.
+3. 상품 상세 페이지 - SSR
+- [ ] 상품 상세 정보를 볼 수 있어야 한다.
+- [ ] 장바구니 버튼이 구현되어야 한다.
+  - [ ] 로그인하지 아낳은 상태에서는 '장바구니에 담기'로 보여야 한다.
+  - [ ] 로그인한 상태에서 해당 상품이 장바구니에 담겨 있다면 '장바구니에서 빼기'로 보여야 한다.
+  - [ ] '장바구니에서 빼기'의 경우에는 해당 상품이 장바구니에 여러 개 있더라도 한 번에 모두 빼야 한다.
+4. 장바구니 페이지 - CSR
+- [ ] 장바구니에 들어 있는 아이템들을 볼 수 있어야 한다.
+- [ ] 각 아이템들의 수량을 1개씩 들리거나 감소시킬 수 있다.
+5. 회원가입 페이지 - CSR
+- [ ] 이메일, 비밀번호, 비밀번호 확인 중 하나라도 입력되지 않은 상태라면 경고창이 떠야한다.
+- [ ] 비밀번호와 비밀번호 확인이 일치하지 않으면 경고창이 떠야 한다.
+- [ ] 회원가입이 진행되는 중에는 인풋과 버튼이 비활성화 되어야 한다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 그 외 
+- [ ] 로그인은 모달을 띄워 진행하는 방식으로 제작되어야 하며 회원가입 페이지와 동일한 요구사항을 가진다.
+- [ ] 로그인이 된 상태라면 새로고침을 해도 로그인이 풀리지 않아야 한다.
+- [ ] 서비스는 반응형 UI로 제작되어야 한다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
