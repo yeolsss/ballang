@@ -1,8 +1,3 @@
-import axios from "axios";
-import { NextResponse } from "next/server";
-
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
-
 interface Brand {
   id: number;
   nameKr: string;
@@ -20,13 +15,14 @@ interface Product {
   brandId: number;
   brand: Brand;
 }
-export interface ProductData {
+export interface ProductsData {
   success: boolean;
   result: Product[];
   error: null | string;
 }
 
-export const GET = async () => {
-  const response = await axios.get("/products");
-  return NextResponse.json(response.data as ProductData);
-};
+export interface ProductData {
+  success: boolean;
+  result: Product;
+  error: null | string;
+}

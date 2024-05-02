@@ -1,56 +1,44 @@
-import { Title } from "@/components/Atoms";
-import axios from "axios";
-import { ProductData } from "@/app/api/products/route";
-import { ProductCard } from "@/components/Organisms";
+import { ProductDetail } from "@/components/Organisms";
+import { GetProductData } from "@/api/products";
+import { ProductData } from "@/types/product.type";
 
-const GetProductData = async () => {
-  const response = await axios.get("http://localhost:3000/api/products");
+interface Props {
+  productId: number;
+}
 
-  return response.data;
-};
-
-async function ProductPage() {
-  const { success, result } = (await GetProductData()) as ProductData;
-
+async function ProductPage({ productId }: Props) {
+  const productData = (await GetProductData(productId)) as ProductData;
+  const { result } = productData;
   return (
-    <main className="flex flex-col p-8">
-      <Title>Trending</Title>
+    <main className="px-5 lg:px-8 py-6 lg:py-10 mx-auto max-w-screen-lg data-[full-width=true]:max-w-none flex flex-col grow w-full items-stretch">
+      <ProductDetail>
+        <ProductDetail.DetailImage
+          src={result.imgSrc}
+          alt={result.name}
+          width={150}
+          height={150}
+        />
 
-      <div className="grid grid-cols-6 gap-x-8 gap-y-12">
-        {result.map((product) => (
-          <ProductCard key={product.id}>
-            <ProductCard.ProductImage
-              src={product.imgSrc}
-              alt={product.name}
-              width={200}
-              height={200}
-            />
-            <ProductCard.ProductInfo>
-              <ProductCard.ProductInfo.BrandName>
-                {product.brand.nameEn}
-              </ProductCard.ProductInfo.BrandName>
+        <ProductDetail.ProductInfoTotal>
+          <ProductDetail.ProductInfoTotal.TitleLink
+            href={`/brands?brandId=${result.brandId}`}
+          >{`${result.brand.nameKr} / ${result.brand.nameEn}`}</ProductDetail.ProductInfoTotal.TitleLink>
+          <ProductDetail.ProductInfoTotal.Name>
+            {result.name}
+          </ProductDetail.ProductInfoTotal.Name>
 
-              <ProductCard.ProductInfo.ProductDescription>
-                {product.name}
-              </ProductCard.ProductInfo.ProductDescription>
+          <ProductDetail.ProductInfoTotal.ProductDetail
+            originPrice={result.originalPrice}
+            discountPrice={result.price}
+            deliveryType={result.deliveryType}
+            onlineStock={result.onlineStock}
+          />
 
-              <ProductCard.ProductInfo.ProductPrices>
-                <ProductCard.ProductInfo.ProductPrices.OriginPrice
-                  variant={"originPrice"}
-                >
-                  {product.originalPrice}
-                </ProductCard.ProductInfo.ProductPrices.OriginPrice>
-
-                <ProductCard.ProductInfo.ProductPrices.DiscountPrice
-                  variant={"default"}
-                >
-                  {product.price}
-                </ProductCard.ProductInfo.ProductPrices.DiscountPrice>
-              </ProductCard.ProductInfo.ProductPrices>
-            </ProductCard.ProductInfo>
-          </ProductCard>
-        ))}
-      </div>
+          <ProductDetail.ProductInfoTotal.Button>
+            장바구니에 담기
+          </ProductDetail.ProductInfoTotal.Button>
+        </ProductDetail.ProductInfoTotal>
+      </ProductDetail>
     </main>
   );
 }

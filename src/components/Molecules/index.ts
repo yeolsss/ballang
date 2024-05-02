@@ -1,2 +1,2 @@
 export { default as ProductInfo } from "./ProductInfo";
-export { default as ProductPrices } from "./ProductPrices";
+export { default as ProductInfoTotal } from "./ProductInfoTotal";

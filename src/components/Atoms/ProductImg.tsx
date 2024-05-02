@@ -10,7 +10,7 @@ function ProductImg({ alt, ...props }: Props) {
   const baseStyle = "object-cover";
 
   return (
-    <div className="aspect-[3/4] relative mb-4">
+    <div className="aspect-[3/4] relative mb-4 group-hover:scale-105 transition-transform">
       <Image
         alt={alt}
         {...props}
