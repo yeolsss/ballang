@@ -7,10 +7,10 @@ interface Props {
 
 function Layout({ children }: Props) {
   return (
-    <div>
+    <>
       <MainHeader />
       {children}
-    </div>
+    </>
   );
 }
 
