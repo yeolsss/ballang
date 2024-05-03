@@ -4,7 +4,7 @@ interface Brand {
   nameEn: string;
 }
 
-interface Product {
+export interface Product {
   id: number;
   name: string;
   imgSrc: string;
