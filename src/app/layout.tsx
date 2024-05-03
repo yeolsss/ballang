@@ -13,7 +13,7 @@ export default function HTMLLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className="relative min-h-[100vh]">{children}</body>
     </html>
   );
 }

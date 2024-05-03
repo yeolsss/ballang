@@ -1,16 +1,19 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 import Button from "@/components/Atoms/Button";
 import { FormInput } from "@/components/Molecules";
 
-interface Props {
+interface Props extends ComponentProps<"form"> {
   children: ReactNode;
 }
 
-function SignUpForm({ children }: Props) {
+function SignUpForm({ children, ...props }: Props) {
   return (
-    <form className="flex flex-col items-center gap-y-4 max-w-sm mx-auto w-full">
+    <form
+      {...props}
+      className="flex flex-col items-center gap-y-4 max-w-sm mx-auto w-full"
+    >
       {children}
     </form>
   );
