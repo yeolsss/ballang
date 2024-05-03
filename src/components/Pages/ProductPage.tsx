@@ -21,8 +21,12 @@ async function ProductPage({ productId }: Props) {
 
         <ProductDetail.ProductInfoTotal>
           <ProductDetail.ProductInfoTotal.TitleLink
+            variant={"default"}
             href={`/brands?brandId=${result.brandId}`}
-          >{`${result.brand.nameKr} / ${result.brand.nameEn}`}</ProductDetail.ProductInfoTotal.TitleLink>
+          >
+            {`${result.brand.nameKr} / ${result.brand.nameEn}`}
+          </ProductDetail.ProductInfoTotal.TitleLink>
+
           <ProductDetail.ProductInfoTotal.Name>
             {result.name}
           </ProductDetail.ProductInfoTotal.Name>

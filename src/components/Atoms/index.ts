@@ -7,3 +7,5 @@ export { default as CustomLink } from "./CustomLink";
 export { default as ProductDetailName } from "./ProductDetailName";
 export { default as ProductDetailColName } from "./ProductDetailColName";
 export { default as ProductDetailSubColName } from "./ProductDetailColValue";
+export { default as Input } from "./Input";
+export { default as Label } from "./Label";
