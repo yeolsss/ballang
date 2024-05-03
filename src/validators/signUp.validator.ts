@@ -12,8 +12,17 @@ export const SignUpFormSchema = z
       .min(6, "비밀번호는 최소 6자리 이상이어야 합니다.")
       .max(100, "비밀번호는 100자리 이하이어야 합니다."),
   })
-  .superRefine(({ password, passwordConfirm }) => {
+  .superRefine(({ password, passwordConfirm }, ctx) => {
     if (password !== passwordConfirm) {
-      return { passwordConfirm: "비밀번호가 일치하지 않습니다." };
+      ctx.addIssue({
+        code: "custom",
+        message: "비밀번호가 다릅니다. 다시 입력해 주세요.",
+        path: ["passwordConfirm"],
+      });
+      ctx.addIssue({
+        code: "custom",
+        message: "비밀번호가 다릅니다. 다시 입력해 주세요.",
+        path: ["password"],
+      });
     }
   });
