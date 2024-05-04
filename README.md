@@ -12,6 +12,9 @@
 - Context API
 - Tanstack Query
 -> 이외의 라이브러리들도 자유롭게 사용해도 괜찮으나, 위 나열된 기술 스택들은 반드시 모두 사용해야함.
+#### 추가 라이브러리
+- tailwind merge, clsx, cva(class-validator-authority)
+- react-hook-form, zod, @hookform/resolvers
 
 ### 2. 페이지 별 기능
 1. 홈페이지 - SSR(SSG)

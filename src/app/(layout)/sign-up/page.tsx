@@ -6,7 +6,7 @@ import ErrorSpan from "@/components/Atoms/ErrorSpan";
 import useSignUpForm from "@/hooks/SignUpForm";
 
 function SignUp() {
-  const { register, handleSubmit, errors, isPending, OnSubmit } =
+  const { register, handleSubmit, errors, isDisabled, OnSubmit } =
     useSignUpForm();
 
   return (
@@ -21,7 +21,7 @@ function SignUp() {
           <SignUpForm.FormInput.Input
             type="text"
             {...register("email")}
-            disabled={isPending}
+            disabled={isDisabled}
           />
           {errors.email?.message && (
             <ErrorSpan>{errors.email?.message}</ErrorSpan>
@@ -35,7 +35,7 @@ function SignUp() {
           <SignUpForm.FormInput.Input
             type="password"
             {...register("password")}
-            disabled={isPending}
+            disabled={isDisabled}
           />
           {errors.password?.message && (
             <ErrorSpan>{errors.password?.message}</ErrorSpan>
@@ -49,7 +49,7 @@ function SignUp() {
           <SignUpForm.FormInput.Input
             type="password"
             {...register("passwordConfirm")}
-            disabled={isPending}
+            disabled={isDisabled}
           />
           {errors.passwordConfirm?.message && (
             <ErrorSpan>{errors.passwordConfirm?.message}</ErrorSpan>
@@ -57,7 +57,7 @@ function SignUp() {
         </SignUpForm.FormInput>
 
         <div className="mt-2"></div>
-        <SignUpForm.SubmitButton disabled={isPending}>
+        <SignUpForm.SubmitButton type={"button"} disabled={isDisabled}>
           회원가입하기
         </SignUpForm.SubmitButton>
       </SignUpForm>

@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { VariantProps } from "class-variance-authority";
-import Toast from "@/components/UI/Toast/Molecules/Toast.tsx";
+import Toast from "@/components/UI/Toast/Molecules/Toast";
 
 type ToastPositionX = "left" | "right";
 type ToastPositionY = "top" | "bottom";
