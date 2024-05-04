@@ -11,8 +11,7 @@ import Toast from "@/components/UI/Toast/Molecules/Toast";
 
 function ToastContainer() {
   const { toasts } = useToast();
-
-  const toastPosition = `absolute max-h-[100vh] h-auto w-auto flex flex-col gap-5 overflow-hidden bottom-5 right-5`;
+  const toastPosition = `fixed max-h-[100vh] h-auto w-auto z-30 flex flex-col gap-5 overflow-hidden bottom-5 right-5`;
 
   return (
     <section
