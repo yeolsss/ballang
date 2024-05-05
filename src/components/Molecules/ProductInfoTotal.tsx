@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { CustomLink, ProductDetailName } from "@/components/Atoms";
-import Button from "@/components/Atoms/Button";
 import ProductDetail from "@/components/Molecules/ProductDetail";
+import ProductDetailButton from "@/components/Molecules/ProductDetailButton";
 
 interface Props {
   children: ReactNode;
@@ -14,6 +14,6 @@ function ProductInfoTotal({ children }: Props) {
 ProductInfoTotal.TitleLink = CustomLink;
 ProductInfoTotal.Name = ProductDetailName;
 ProductInfoTotal.ProductDetail = ProductDetail;
-ProductInfoTotal.Button = Button;
+ProductInfoTotal.Button = ProductDetailButton;
 
 export default ProductInfoTotal;

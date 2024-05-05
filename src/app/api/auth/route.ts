@@ -11,11 +11,10 @@ interface FetchResponse {
 
 export const POST = async (req: Request) => {
   const { email, password } = await req.json();
-  const response = await axiosInstance.post(
-    "/auth/log-in",
-    { email, password },
-    { withCredentials: true },
-  );
+  const response = await axiosInstance.post("/auth/log-in", {
+    email,
+    password,
+  });
 
   const token = response.headers["set-cookie"];
   if (Array.isArray(token) && token.length !== 0) {
@@ -24,7 +23,7 @@ export const POST = async (req: Request) => {
     const accessToken = parsedCookies.accessToken;
 
     if (accessToken) {
-      cookies().set("accessToken", accessToken, { httpOnly: true });
+      cookies().set("accessToken", accessToken);
     }
   }
   return NextResponse.json({
@@ -40,12 +39,4 @@ export const DELETE = async () => {
   return NextResponse.json({
     result: response.data,
   } as FetchResponse);
-};
-
-export const GET = () => {
-  const token = cookies().get("accessToken");
-  console.log("token = ", token?.value);
-  return NextResponse.json({
-    isLogin: !!token,
-  });
 };

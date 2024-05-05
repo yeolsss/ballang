@@ -7,7 +7,7 @@ interface Props {
   };
 }
 
-function Page({ params }: Props) {
+function Product({ params }: Props) {
   const { productId } = params;
 
   return (
@@ -17,4 +17,4 @@ function Page({ params }: Props) {
   );
 }
 
-export default Page;
+export default Product;

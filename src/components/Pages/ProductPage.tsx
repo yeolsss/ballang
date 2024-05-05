@@ -10,7 +10,7 @@ async function ProductPage({ productId }: Props) {
   const productData = (await GetProductData(productId)) as ProductData;
   const { result } = productData;
   return (
-    <main className="px-5 lg:px-8 py-6 lg:py-10 mx-auto max-w-screen-lg data-[full-width=true]:max-w-none flex flex-col grow w-full items-stretch">
+    <>
       <ProductDetail>
         <ProductDetail.DetailImage
           src={result.imgSrc}
@@ -38,12 +38,10 @@ async function ProductPage({ productId }: Props) {
             onlineStock={result.onlineStock}
           />
 
-          <ProductDetail.ProductInfoTotal.Button>
-            장바구니에 담기
-          </ProductDetail.ProductInfoTotal.Button>
+          <ProductDetail.ProductInfoTotal.Button productId={result.id} />
         </ProductDetail.ProductInfoTotal>
       </ProductDetail>
-    </main>
+    </>
   );
 }
 
