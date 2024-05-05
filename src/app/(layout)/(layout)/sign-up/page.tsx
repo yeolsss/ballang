@@ -57,7 +57,7 @@ function SignUp() {
         </SignUpForm.FormInput>
 
         <div className="mt-2"></div>
-        <SignUpForm.SubmitButton type={"button"} disabled={isDisabled}>
+        <SignUpForm.SubmitButton type={"submit"} disabled={isDisabled}>
           회원가입하기
         </SignUpForm.SubmitButton>
       </SignUpForm>
