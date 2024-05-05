@@ -37,6 +37,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { data, refetch } = useQuery({
     queryKey: ["isLogin"],
     queryFn: GetIsLogin,
+    staleTime: 1000 * 60 * 60,
+    retry: 3,
   });
   const { mutate } = useMutation({
     mutationFn: DeleteLogout,
@@ -52,7 +54,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const checkLogin = useCallback(async () => {
     await refetch();
-    setIsLogin(data?.isLogin);
+    setIsLogin(data?.isLogin ?? false);
   }, [data, refetch]);
 
   useEffect(() => {

@@ -3,16 +3,13 @@ import { z } from "zod";
 import { SignUpFormSchema } from "@/validators/signUp.validator";
 import { LoginFormSchema } from "@/validators/login.validator";
 import axios from "axios";
+import { getCookie } from "cookies-next";
 
 export const PostSignUp = async (data: z.infer<typeof SignUpFormSchema>) => {
-  return await axiosInstance.post(
-    "/auth/sign-up",
-    {
-      email: data.email,
-      password: data.password,
-    },
-    { withCredentials: true },
-  );
+  return await axiosInstance.post("/auth/sign-up", {
+    email: data.email,
+    password: data.password,
+  });
 };
 
 export const PostLogin = async (data: z.infer<typeof LoginFormSchema>) => {
@@ -30,6 +27,15 @@ export const DeleteLogout = async () => {
 };
 
 export const GetIsLogin = async () => {
-  const response = await axios.get("/api/auth");
-  return response.data;
+  const cookie = getCookie("accessToken");
+
+  if (!!cookie) {
+    await axiosInstance.get("/auth/refresh-token", {
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `accessToken=${cookie}`,
+      },
+    });
+  }
+  return { isLogin: !!cookie } as { isLogin: boolean };
 };
