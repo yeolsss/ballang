@@ -7,23 +7,21 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { DeleteLogout, GetIsLogin } from "@/api/auth";
+import { useMutation } from "@tanstack/react-query";
+import { DeleteLogout, PostRefreshToken } from "@/api/auth";
 import { usePathname } from "next/navigation";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 //1. 만든다.
 interface AuthContext {
-  isLogin: boolean | null;
   logout: () => void;
-  checkLogin: () => void;
+  cookie: RequestCookie | undefined;
 }
 
 const initialAuth: AuthContext = {
-  isLogin: false,
   logout: () => {},
-  checkLogin: () => {},
+  cookie: undefined,
 };
 
 const AuthContext = createContext<AuthContext>(initialAuth);
@@ -32,41 +30,40 @@ const AuthContext = createContext<AuthContext>(initialAuth);
 export const useAuth = () => useContext(AuthContext);
 
 //3. 범위를 지정한다.
-export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [isLogin, setIsLogin] = useState<boolean | null>(null);
-  const { data, refetch } = useQuery({
-    queryKey: ["isLogin"],
-    queryFn: GetIsLogin,
-    staleTime: 1000 * 60 * 60,
-    retry: 3,
+export const AuthProvider: React.FC<
+  PropsWithChildren<{ cookie: RequestCookie | undefined }>
+> = ({ children, cookie }) => {
+  const { mutate: refreshTokenMutate } = useMutation({
+    mutationFn: PostRefreshToken,
   });
-  const { mutate } = useMutation({
+
+  const { mutate: DeleteLogoutMutate } = useMutation({
     mutationFn: DeleteLogout,
     onSuccess: () => {
-      setIsLogin(false);
+      console.log("로그아웃이 되었습니다!");
+      window.location.href = "/";
     },
   });
+
   const pathname = usePathname();
 
-  const logout = useCallback(() => {
-    mutate();
-  }, [mutate]);
+  const refreshToken = useCallback(async () => {
+    refreshTokenMutate(cookie);
+  }, [refreshTokenMutate, cookie]);
 
-  const checkLogin = useCallback(async () => {
-    await refetch();
-    setIsLogin(data?.isLogin ?? false);
-  }, [data, refetch]);
+  const logout = useCallback(() => {
+    DeleteLogoutMutate();
+  }, [DeleteLogoutMutate]);
 
   useEffect(() => {
-    (async () => {
-      await checkLogin();
-    })();
-  }, [pathname, checkLogin]);
+    if (cookie) {
+      (async () => {
+        await refreshToken();
+      })();
+    }
+  }, [pathname, cookie, refreshToken]);
 
-  const value = useMemo(
-    () => ({ isLogin, logout, checkLogin }),
-    [isLogin, logout, checkLogin],
-  );
+  const value = useMemo(() => ({ logout, cookie }), [logout, cookie]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -9,6 +9,7 @@ interface Props {
 
 function Modal({ children }: Props) {
   const { isOpen, handleIsOpen } = useModal();
+
   return (
     <>
       {isOpen && (

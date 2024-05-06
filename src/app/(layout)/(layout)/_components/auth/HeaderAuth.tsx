@@ -6,16 +6,16 @@ import { useAuth } from "@/context/auth";
 
 function HeaderAuth() {
   const { handleIsOpen } = useModal();
-  const { isLogin, logout } = useAuth();
+  const { logout, cookie } = useAuth();
 
   const baseStyle =
     "text-[15px] text-gray-800 hover:text-black transition font-medium";
 
-  if (isLogin === null) return null;
+  if (cookie === null) return null;
 
   return (
     <div className="ml-auto flex gap-x-4 items-center text-[15px]">
-      {!isLogin ? (
+      {!cookie ? (
         <>
           <Link href={"/sign-up"} className={baseStyle}>
             회원가입

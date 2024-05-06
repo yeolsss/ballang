@@ -11,14 +11,12 @@ import useDisable from "@/hooks/DisableState";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/context/modalContext";
-import { useAuth } from "@/context/auth";
 
 const useLoginForm = () => {
   const { mutate } = useMutation({ mutationFn: PostLogin });
   const { toast } = useToast();
   const [isDisabled, handleToggleDisable] = useDisable();
   const { handleIsOpen } = useModal();
-  const { checkLogin } = useAuth();
   const router = useRouter();
 
   const {
@@ -46,8 +44,7 @@ const useLoginForm = () => {
           });
           handleToggleDisable(false);
           handleIsOpen(null, false);
-          checkLogin();
-          router.push("/");
+          window.location.href = "/";
         },
         onError: () => {
           toast({

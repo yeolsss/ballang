@@ -12,7 +12,7 @@ interface Props {
 
 function ProductDetailButton({ productId }: Props) {
   const { handleIsOpen } = useModal();
-  const { isLogin } = useAuth();
+  const { cookie } = useAuth();
   const { toast } = useToast();
   const { clearCartMutate, postCartMutate, cartData, reFetchCart } = useCart();
 
@@ -40,13 +40,13 @@ function ProductDetailButton({ productId }: Props) {
     });
   };
 
-  if (!isLogin) {
+  if (!cookie) {
     return (
       <Button onClick={(e) => handleIsOpen(e, true)}>장바구니에 담기</Button>
     );
   }
 
-  if (isLogin) {
+  if (cookie) {
     const result = cartData?.result?.items.find(
       (item) => item.product.id === productId,
     );

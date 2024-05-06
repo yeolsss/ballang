@@ -23,7 +23,7 @@ export const POST = async (req: Request) => {
     const accessToken = parsedCookies.accessToken;
 
     if (accessToken) {
-      cookies().set("accessToken", accessToken);
+      cookies().set("accessToken", accessToken, { httpOnly: true });
     }
   }
   return NextResponse.json({

@@ -4,14 +4,17 @@ import Providers from "@/providers";
 import ToastContainer from "@/components/UI/Toast/Organisms/ToastContainer";
 import Modal from "@/components/Pages/Modal";
 import LoginContainer from "@/components/Organisms/LoginContainer";
+import { cookies } from "next/headers";
 
 interface Props {
   children: ReactNode;
 }
 
-function Layout({ children }: Props) {
+async function RootLayout({ children }: Props) {
+  const cookie = cookies().get("accessToken");
+
   return (
-    <Providers>
+    <Providers cookie={cookie}>
       <MainHeader />
       {children}
       <ToastContainer />
@@ -22,4 +25,4 @@ function Layout({ children }: Props) {
   );
 }
 
-export default Layout;
+export default RootLayout;

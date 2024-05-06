@@ -4,12 +4,12 @@ import { useAuth } from "@/context/auth";
 
 const useCart = () => {
   const queryClient = useQueryClient();
-  const { isLogin } = useAuth();
+  const { cookie } = useAuth();
   const { data: cartData } = useQuery({
     queryKey: ["cart"],
     queryFn: GetCart,
     retry: 3,
-    enabled: !!isLogin,
+    enabled: !!cookie,
   });
 
   const { mutate: clearCartMutate } = useMutation({
