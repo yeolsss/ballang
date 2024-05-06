@@ -10,6 +10,7 @@ export const DELETE = async (req: Request) => {
     `/cart/products/${productId}/clear`,
     {
       headers: {
+        "Content-Type": "application/json",
         cookie: `${cookie?.name}=${cookie?.value}`,
       },
     },

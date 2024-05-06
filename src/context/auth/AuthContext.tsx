@@ -8,20 +8,27 @@ import {
   useEffect,
   useMemo,
 } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { DeleteLogout, PostRefreshToken } from "@/api/auth";
+import { UseMutateFunction, useMutation } from "@tanstack/react-query";
+import { DeleteLogout, PostLogin, PostRefreshToken } from "@/api/auth";
 import { usePathname } from "next/navigation";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 //1. 만든다.
 interface AuthContext {
-  logout: () => void;
+  handleClickLogout: () => void;
   cookie: RequestCookie | undefined;
+  loginMutate: UseMutateFunction<
+    any,
+    Error,
+    { email: string; password: string },
+    unknown
+  >;
 }
 
 const initialAuth: AuthContext = {
-  logout: () => {},
+  handleClickLogout: () => {},
   cookie: undefined,
+  loginMutate: () => {},
 };
 
 const AuthContext = createContext<AuthContext>(initialAuth);
@@ -37,33 +44,37 @@ export const AuthProvider: React.FC<
     mutationFn: PostRefreshToken,
   });
 
-  const { mutate: DeleteLogoutMutate } = useMutation({
+  const { mutate: logoutMutate } = useMutation({
     mutationFn: DeleteLogout,
     onSuccess: () => {
-      console.log("로그아웃이 되었습니다!");
       window.location.href = "/";
     },
   });
 
+  const { mutate: loginMutate } = useMutation({ mutationFn: PostLogin });
+
   const pathname = usePathname();
 
-  const refreshToken = useCallback(async () => {
+  const handleRefreshToken = useCallback(async () => {
     refreshTokenMutate(cookie);
   }, [refreshTokenMutate, cookie]);
 
-  const logout = useCallback(() => {
-    DeleteLogoutMutate();
-  }, [DeleteLogoutMutate]);
+  const handleClickLogout = useCallback(() => {
+    logoutMutate();
+  }, [logoutMutate]);
 
   useEffect(() => {
     if (cookie) {
       (async () => {
-        await refreshToken();
+        await handleRefreshToken();
       })();
     }
-  }, [pathname, cookie, refreshToken]);
+  }, [pathname, cookie, handleRefreshToken]);
 
-  const value = useMemo(() => ({ logout, cookie }), [logout, cookie]);
+  const value = useMemo(
+    () => ({ handleClickLogout, cookie, loginMutate }),
+    [handleClickLogout, cookie, loginMutate],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

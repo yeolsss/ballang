@@ -7,6 +7,7 @@ export const GET = async () => {
 
   const response = await axiosInstance.get("/cart", {
     headers: {
+      "Content-Type": "application/json",
       cookie: `${cookie?.name}=${cookie?.value}`,
     },
   });
@@ -24,6 +25,7 @@ export const POST = async (req: Request) => {
     {},
     {
       headers: {
+        "Content-Type": "application/json",
         cookie: `${cookie?.name}=${cookie?.value}`,
       },
     },
@@ -39,6 +41,7 @@ export const DELETE = async (req: Request) => {
 
   const response = await axiosInstance.delete(`/cart/products/${productId}`, {
     headers: {
+      "Content-Type": "application/json",
       cookie: `${cookie?.name}=${cookie?.value}`,
     },
   });

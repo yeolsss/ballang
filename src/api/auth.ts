@@ -13,26 +13,25 @@ export const PostSignUp = async (data: z.infer<typeof SignUpFormSchema>) => {
 };
 
 export const PostLogin = async (data: z.infer<typeof LoginFormSchema>) => {
-  const response = await axios.post("/api/auth", {
-    email: data.email,
-    password: data.password,
-  });
+  const response = await axios.post(
+    "/api/auth",
+    {
+      email: data.email,
+      password: data.password,
+    },
+    { withCredentials: true },
+  );
 
   return response.data;
 };
 
 export const DeleteLogout = async () => {
-  const response = await axios.delete("/api/auth");
+  const response = await axios.delete("/api/auth", { withCredentials: true });
   return response.data;
 };
 
 export const PostRefreshToken = async (cookie: RequestCookie | undefined) => {
   if (cookie) {
-    await axiosInstance.get("/auth/refresh-token", {
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `${cookie?.name}=${cookie?.value}`,
-      },
-    });
+    await axiosInstance.get("/auth/refresh-token");
   }
 };

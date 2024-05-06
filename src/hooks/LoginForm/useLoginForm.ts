@@ -4,20 +4,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoginFormSchema } from "@/validators/login.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PostLogin } from "@/api/auth";
-import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/UI/Toast/context/Toast";
 import useDisable from "@/hooks/DisableState";
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { useModal } from "@/context/modalContext";
+import { useAuth } from "@/context/auth";
 
 const useLoginForm = () => {
-  const { mutate } = useMutation({ mutationFn: PostLogin });
+  const { loginMutate } = useAuth();
   const { toast } = useToast();
   const [isDisabled, handleToggleDisable] = useDisable();
   const { handleIsOpen } = useModal();
-  const router = useRouter();
 
   const {
     register,
@@ -34,7 +31,7 @@ const useLoginForm = () => {
   const OnSubmit = useCallback(
     (data: z.infer<typeof LoginFormSchema>) => {
       handleToggleDisable(true);
-      mutate(data, {
+      loginMutate(data, {
         onSuccess: async () => {
           toast({
             title: "로그인에 성공했습니다.",
@@ -59,7 +56,7 @@ const useLoginForm = () => {
         },
       });
     },
-    [handleIsOpen, handleToggleDisable, mutate, router, toast],
+    [handleIsOpen, handleToggleDisable, loginMutate, toast],
   );
 
   return { register, handleSubmit, errors, OnSubmit, isDisabled };

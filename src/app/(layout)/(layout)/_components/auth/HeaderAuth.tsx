@@ -6,7 +6,7 @@ import { useAuth } from "@/context/auth";
 
 function HeaderAuth() {
   const { handleIsOpen } = useModal();
-  const { logout, cookie } = useAuth();
+  const { handleClickLogout, cookie } = useAuth();
 
   const baseStyle =
     "text-[15px] text-gray-800 hover:text-black transition font-medium";
@@ -29,7 +29,7 @@ function HeaderAuth() {
           <Link href={"/cart"} className={baseStyle}>
             장바구니
           </Link>
-          <button className={baseStyle} onClick={logout}>
+          <button className={baseStyle} onClick={handleClickLogout}>
             로그아웃
           </button>
         </>

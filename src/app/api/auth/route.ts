@@ -26,6 +26,7 @@ export const POST = async (req: Request) => {
       cookies().set("accessToken", accessToken, { httpOnly: true });
     }
   }
+
   return NextResponse.json({
     result: response.data,
   } as FetchResponse);

@@ -7,7 +7,7 @@ export const GetCart = async () => {
 };
 
 export const DeleteCart = async (productId: number) => {
-  const response = await axios.delete("/api/cart", {
+  await axios.delete("/api/cart", {
     data: {
       productId,
     },
@@ -15,7 +15,7 @@ export const DeleteCart = async (productId: number) => {
 };
 
 export const DeleteClearCart = async (productId: number) => {
-  const response = await axios.delete("/api/cart/clear", {
+  await axios.delete("/api/cart/clear", {
     data: {
       productId,
     },
@@ -23,7 +23,7 @@ export const DeleteClearCart = async (productId: number) => {
 };
 
 export const PostCart = async (productId: number) => {
-  const response = await axios.post("/api/cart", {
+  await axios.post("/api/cart", {
     productId,
   });
 };
