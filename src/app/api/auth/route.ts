@@ -1,7 +1,6 @@
 import axiosInstance from "@/lib/axiosAPI";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { parse } from "cookie";
 
 interface FetchResponse {
   success: boolean | null;
@@ -16,7 +15,7 @@ export const POST = async (req: Request) => {
     password,
   });
 
-  const token = response.headers["set-cookie"];
+  /*const token = response.headers["set-cookie"];
   if (Array.isArray(token) && token.length !== 0) {
     const cookieString = token[0];
     const parsedCookies = parse(cookieString);
@@ -25,7 +24,7 @@ export const POST = async (req: Request) => {
     if (accessToken) {
       cookies().set("accessToken", accessToken, { httpOnly: true });
     }
-  }
+  }*/
 
   return NextResponse.json({
     result: response.data,
