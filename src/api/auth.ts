@@ -25,19 +25,6 @@ export const PostLogin = async (data: z.infer<typeof LoginFormSchema>) => {
   return response.data;
 };
 
-export const PostLoginTest = async (data: z.infer<typeof LoginFormSchema>) => {
-  const response = await axiosInstance.post(
-    "/auth/log-in",
-    {
-      email: data.email,
-      password: data.password,
-    },
-    { withCredentials: true },
-  );
-
-  return response.data;
-};
-
 export const DeleteLogout = async () => {
   const response = await axios.delete("/api/auth", { withCredentials: true });
   return response.data;
