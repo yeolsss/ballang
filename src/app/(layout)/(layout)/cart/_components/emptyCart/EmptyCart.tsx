@@ -13,7 +13,7 @@ function EmptyCart() {
         <Button
           className="w-64"
           onClick={() => router.push("/")}
-          variant={"cart"}
+          variant={"ghost"}
         >
           쇼핑하러 가기
         </Button>
