@@ -9,7 +9,7 @@ import {
   useMemo,
 } from "react";
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
-import { DeleteLogout, PostLogin, PostRefreshToken } from "@/api/auth";
+import { DeleteLogout, PostLoginTest, PostRefreshToken } from "@/api/auth";
 import { usePathname } from "next/navigation";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<
     },
   });
 
-  const { mutate: loginMutate } = useMutation({ mutationFn: PostLogin });
+  const { mutate: loginMutate } = useMutation({ mutationFn: PostLoginTest });
 
   const pathname = usePathname();
 
