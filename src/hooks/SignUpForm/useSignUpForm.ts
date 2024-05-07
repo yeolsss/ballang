@@ -5,14 +5,13 @@ import { z } from "zod";
 import { SignUpFormSchema } from "@/validators/signUp.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { PostSignUp } from "@/api/auth";
 import { useToast } from "@/components/UI/Toast/context/Toast";
 import { useRouter } from "next/navigation";
 import useDisable from "@/hooks/DisableState";
+import { useAuth } from "@/context/auth";
 
 const useSignUpForm = () => {
-  const { mutate, isPending } = useMutation({ mutationFn: PostSignUp });
+  const { signupMutate } = useAuth();
   const { toast } = useToast();
   const [isDisabled, handleToggleDisable] = useDisable();
   const router = useRouter();
@@ -33,7 +32,7 @@ const useSignUpForm = () => {
   const OnSubmit = useCallback(
     (data: z.infer<typeof SignUpFormSchema>) => {
       handleToggleDisable(true);
-      mutate(data, {
+      signupMutate(data, {
         onSuccess: () => {
           toast({
             title: "회원가입에 성공했습니다.",
@@ -57,7 +56,7 @@ const useSignUpForm = () => {
         },
       });
     },
-    [handleToggleDisable, mutate, router, toast],
+    [handleToggleDisable, signupMutate, router, toast],
   );
 
   return { register, handleSubmit, errors, isDisabled, OnSubmit };

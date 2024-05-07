@@ -6,7 +6,20 @@ import axios from "axios";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 export const PostSignUp = async (data: z.infer<typeof SignUpFormSchema>) => {
-  return await axiosInstance.post("/auth/sign-up", {
+  const response = await axiosInstance.post("/auth/sign-up", {
+    email: data.email,
+    password: data.password,
+  });
+
+  console.log(response);
+
+  return response.data;
+};
+
+export const PostSignUpTest = async (
+  data: z.infer<typeof SignUpFormSchema>,
+) => {
+  return await axios.post("/api/auth/signUp", {
     email: data.email,
     password: data.password,
   });

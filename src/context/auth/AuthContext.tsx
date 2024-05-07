@@ -9,18 +9,32 @@ import {
   useMemo,
 } from "react";
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
-import { DeleteLogout, PostLogin, PostRefreshToken } from "@/api/auth";
+import {
+  DeleteLogout,
+  PostLogin,
+  PostRefreshToken,
+  PostSignUpTest,
+} from "@/api/auth";
 import { usePathname } from "next/navigation";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { z } from "zod";
+import { SignUpFormSchema } from "@/validators/signUp.validator";
+import { LoginFormSchema } from "@/validators/login.validator";
+import { getCookie } from "cookies-next";
 
-//1. 만든다.
 interface AuthContext {
   handleClickLogout: () => void;
   cookie: RequestCookie | undefined;
   loginMutate: UseMutateFunction<
     any,
     Error,
-    { email: string; password: string },
+    z.infer<typeof LoginFormSchema>,
+    unknown
+  >;
+  signupMutate: UseMutateFunction<
+    any,
+    Error,
+    z.infer<typeof SignUpFormSchema>,
     unknown
   >;
 }
@@ -29,14 +43,13 @@ const initialAuth: AuthContext = {
   handleClickLogout: () => {},
   cookie: undefined,
   loginMutate: () => {},
+  signupMutate: () => {},
 };
 
 const AuthContext = createContext<AuthContext>(initialAuth);
 
-//2. 사용한다.
 export const useAuth = () => useContext(AuthContext);
 
-//3. 범위를 지정한다.
 export const AuthProvider: React.FC<
   PropsWithChildren<{ cookie: RequestCookie | undefined }>
 > = ({ children, cookie }) => {
@@ -52,6 +65,9 @@ export const AuthProvider: React.FC<
   });
 
   const { mutate: loginMutate } = useMutation({ mutationFn: PostLogin });
+  const { mutate: signupMutate } = useMutation({
+    mutationFn: PostSignUpTest,
+  });
 
   const pathname = usePathname();
 
@@ -71,9 +87,13 @@ export const AuthProvider: React.FC<
     }
   }, [pathname, cookie, handleRefreshToken]);
 
+  useEffect(() => {
+    console.log("cookies = ", getCookie("accessToken"));
+  }, [pathname]);
+
   const value = useMemo(
-    () => ({ handleClickLogout, cookie, loginMutate }),
-    [handleClickLogout, cookie, loginMutate],
+    () => ({ handleClickLogout, cookie, loginMutate, signupMutate }),
+    [handleClickLogout, cookie, loginMutate, signupMutate],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

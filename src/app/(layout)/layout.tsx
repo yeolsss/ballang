@@ -12,6 +12,7 @@ interface Props {
 
 async function RootLayout({ children }: Props) {
   const cookie = cookies().get("accessToken");
+  console.log({ cookie });
 
   return (
     <Providers cookie={cookie}>
