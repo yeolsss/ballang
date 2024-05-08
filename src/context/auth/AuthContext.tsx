@@ -7,24 +7,23 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
 import {
   DeleteLogout,
   PostLogin,
   PostRefreshToken,
-  PostSignUpTest,
+  PostSignUp,
 } from "@/api/auth";
 import { usePathname } from "next/navigation";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { z } from "zod";
 import { SignUpFormSchema } from "@/validators/signUp.validator";
 import { LoginFormSchema } from "@/validators/login.validator";
-import { getCookie } from "cookies-next";
 
 interface AuthContext {
+  isLogin: boolean | null;
   handleClickLogout: () => void;
-  cookie: RequestCookie | undefined;
   loginMutate: UseMutateFunction<
     any,
     Error,
@@ -40,8 +39,8 @@ interface AuthContext {
 }
 
 const initialAuth: AuthContext = {
+  isLogin: null,
   handleClickLogout: () => {},
-  cookie: undefined,
   loginMutate: () => {},
   signupMutate: () => {},
 };
@@ -50,11 +49,13 @@ const AuthContext = createContext<AuthContext>(initialAuth);
 
 export const useAuth = () => useContext(AuthContext);
 
-export const AuthProvider: React.FC<
-  PropsWithChildren<{ cookie: RequestCookie | undefined }>
-> = ({ children, cookie }) => {
+export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [isLogin, setIsLogin] = useState<boolean | null>(null);
   const { mutate: refreshTokenMutate } = useMutation({
     mutationFn: PostRefreshToken,
+    onSuccess: (res) => {
+      setIsLogin(res.result);
+    },
   });
 
   const { mutate: logoutMutate } = useMutation({
@@ -66,34 +67,26 @@ export const AuthProvider: React.FC<
 
   const { mutate: loginMutate } = useMutation({ mutationFn: PostLogin });
   const { mutate: signupMutate } = useMutation({
-    mutationFn: PostSignUpTest,
+    mutationFn: PostSignUp,
   });
 
   const pathname = usePathname();
 
-  const handleRefreshToken = useCallback(async () => {
-    refreshTokenMutate(cookie);
-  }, [refreshTokenMutate, cookie]);
+  const handleRefreshToken = useCallback(() => {
+    return refreshTokenMutate();
+  }, [refreshTokenMutate]);
 
   const handleClickLogout = useCallback(() => {
     logoutMutate();
   }, [logoutMutate]);
 
   useEffect(() => {
-    if (cookie) {
-      (async () => {
-        await handleRefreshToken();
-      })();
-    }
-  }, [pathname, cookie, handleRefreshToken]);
-
-  useEffect(() => {
-    console.log("cookies = ", getCookie("accessToken"));
-  }, [pathname]);
+    handleRefreshToken();
+  }, [pathname, handleRefreshToken]);
 
   const value = useMemo(
-    () => ({ handleClickLogout, cookie, loginMutate, signupMutate }),
-    [handleClickLogout, cookie, loginMutate, signupMutate],
+    () => ({ handleClickLogout, loginMutate, signupMutate, isLogin }),
+    [handleClickLogout, loginMutate, signupMutate, isLogin],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

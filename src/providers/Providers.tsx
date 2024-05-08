@@ -4,15 +4,11 @@ import { PropsWithChildren } from "react";
 import { ToastProvider } from "@/components/UI/Toast/context/Toast";
 import { ModalProvider } from "@/context/modalContext";
 import { AuthProvider } from "@/context/auth";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-function Providers({
-  children,
-  cookie,
-}: PropsWithChildren<{ cookie?: RequestCookie | undefined }>) {
+function Providers({ children }: PropsWithChildren) {
   return (
     <TanstackQueryProvider>
-      <AuthProvider cookie={cookie}>
+      <AuthProvider>
         <ModalProvider>
           <ToastProvider>{children}</ToastProvider>
         </ModalProvider>

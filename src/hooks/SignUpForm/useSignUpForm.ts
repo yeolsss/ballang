@@ -41,7 +41,7 @@ const useSignUpForm = () => {
             duration: 5000,
           });
           handleToggleDisable(false);
-          router.push("/");
+          // router.push("/");
         },
         onError: () => {
           toast({
@@ -56,7 +56,7 @@ const useSignUpForm = () => {
         },
       });
     },
-    [handleToggleDisable, signupMutate, router, toast],
+    [handleToggleDisable, signupMutate, toast],
   );
 
   return { register, handleSubmit, errors, isDisabled, OnSubmit };

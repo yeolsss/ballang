@@ -1,29 +1,40 @@
 import { CartData } from "@/types/cart.type";
-import axios from "axios";
+import axiosInstance from "@/lib/axiosAPI";
 
 export const GetCart = async () => {
-  const response = await axios.get("/api/cart");
-  return response.data.data as CartData;
+  try {
+    const response = await axiosInstance.get("/cart");
+    return response.data as CartData;
+  } catch (error) {
+    throw new Error("카트호출에 실패했습니다.");
+  }
 };
 
 export const DeleteCart = async (productId: number) => {
-  await axios.delete("/api/cart", {
-    data: {
-      productId,
-    },
-  });
+  try {
+    const response = await axiosInstance.delete(`/cart/products/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("카트삭제에 실패했습니다.");
+  }
 };
 
 export const DeleteClearCart = async (productId: number) => {
-  await axios.delete("/api/cart/clear", {
-    data: {
-      productId,
-    },
-  });
+  try {
+    const response = await axiosInstance.delete(
+      `/cart/products/${productId}/clear`,
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("카트삭제에 실패했습니다.");
+  }
 };
 
 export const PostCart = async (productId: number) => {
-  await axios.post("/api/cart", {
-    productId,
-  });
+  try {
+    const response = await axiosInstance.post(`/cart/products/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("카트추가에 실패했습니다.");
+  }
 };

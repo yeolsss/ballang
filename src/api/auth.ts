@@ -2,62 +2,52 @@ import axiosInstance from "@/lib/axiosAPI";
 import { z } from "zod";
 import { SignUpFormSchema } from "@/validators/signUp.validator";
 import { LoginFormSchema } from "@/validators/login.validator";
-import axios from "axios";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+
+interface RefreshTokenResponse {
+  success: boolean | null;
+  result: boolean | null;
+  error: boolean | null;
+}
 
 export const PostSignUp = async (data: z.infer<typeof SignUpFormSchema>) => {
-  const response = await axiosInstance.post("/auth/sign-up", {
-    email: data.email,
-    password: data.password,
-  });
+  try {
+    const response = await axiosInstance.post("/auth/sign-up", {
+      email: data.email,
+      password: data.password,
+    });
 
-  console.log(response);
-
-  return response.data;
-};
-
-export const PostSignUpTest = async (
-  data: z.infer<typeof SignUpFormSchema>,
-) => {
-  return await axios.post("/api/auth/signUp", {
-    email: data.email,
-    password: data.password,
-  });
+    return response.data;
+  } catch (error) {
+    throw new Error("회원가입에 실패했습니다.");
+  }
 };
 
 export const PostLogin = async (data: z.infer<typeof LoginFormSchema>) => {
-  const response = await axios.post(
-    "/api/auth",
-    {
+  try {
+    const response = await axiosInstance.post("/auth/log-in", {
       email: data.email,
       password: data.password,
-    },
-    { withCredentials: true },
-  );
+    });
 
-  return response.data;
-};
-
-export const PostLoginTest = async (data: z.infer<typeof LoginFormSchema>) => {
-  const response = await axiosInstance.post(
-    "/auth/log-in",
-    {
-      email: data.email,
-      password: data.password,
-    },
-    { withCredentials: true },
-  );
-
-  return response.data;
+    return response.data;
+  } catch (error) {
+    throw new Error("로그인에 실패했습니다.");
+  }
 };
 
 export const DeleteLogout = async () => {
-  const response = await axios.delete("/api/auth", { withCredentials: true });
-  return response.data;
+  try {
+    await axiosInstance.delete("/auth/log-out");
+  } catch (error) {
+    throw new Error("로그아웃에 실패했습니다.");
+  }
 };
 
-export const PostRefreshToken = async (cookie: RequestCookie | undefined) => {
-  if (cookie) {
-    await axiosInstance.get("/auth/refresh-token");
+export const PostRefreshToken = async () => {
+  try {
+    const response = await axiosInstance.get("/auth/refresh-token");
+    return response.data as RefreshTokenResponse;
+  } catch (error) {
+    throw new Error("토큰 갱신에 실패했습니다.");
   }
 };

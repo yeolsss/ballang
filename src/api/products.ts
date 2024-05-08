@@ -2,12 +2,19 @@ import { ProductsData } from "@/types/product.type";
 import axiosInstance from "@/lib/axiosAPI";
 
 export const GetProductsData = async () => {
-  const response = await axiosInstance.get("/products");
-
-  return response.data as ProductsData;
+  try {
+    const response = await axiosInstance.get("/products");
+    return response.data as ProductsData;
+  } catch (error) {
+    throw new Error("상품 데이터를 불러오는데 실패했습니다.");
+  }
 };
 
 export const GetProductData = async (productId: number) => {
-  const response = await axiosInstance.get(`/products/${productId}`);
-  return response.data;
+  try {
+    const response = await axiosInstance.get(`/products/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("상품 데이터를 불러오는데 실패했습니다.");
+  }
 };
