@@ -41,7 +41,7 @@ const useSignUpForm = () => {
             duration: 5000,
           });
           handleToggleDisable(false);
-          // router.push("/");
+          router.push("/");
         },
         onError: () => {
           toast({
