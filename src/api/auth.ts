@@ -29,10 +29,14 @@ export const PostLogin = async (data: z.infer<typeof LoginFormSchema>) => {
       password: data.password,
     });
 
+<<<<<<< HEAD
     return response.data;
   } catch (error) {
     throw new Error("로그인에 실패했습니다.");
   }
+=======
+  return response.data;
+>>>>>>> b434bd67b39f65437715e5253b1cd3bddb561014
 };
 
 export const DeleteLogout = async () => {

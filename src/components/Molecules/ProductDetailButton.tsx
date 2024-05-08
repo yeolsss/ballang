@@ -53,7 +53,7 @@ function ProductDetailButton({ productId }: Props) {
 
     if (result)
       return (
-        <Button variant={"cart"} onClick={handleDeleteCart}>
+        <Button variant={"ghost"} onClick={handleDeleteCart}>
           장바구니에 빼기
         </Button>
       );

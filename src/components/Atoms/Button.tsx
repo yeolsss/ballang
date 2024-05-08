@@ -8,7 +8,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-black text-white",
-        cart: "bg-white text-black",
+        ghost: "bg-white text-black",
       },
     },
     defaultVariants: {

@@ -10,12 +10,16 @@ import {
   useState,
 } from "react";
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
+<<<<<<< HEAD
 import {
   DeleteLogout,
   PostLogin,
   PostRefreshToken,
   PostSignUp,
 } from "@/api/auth";
+=======
+import { DeleteLogout, PostLogin, PostRefreshToken } from "@/api/auth";
+>>>>>>> b434bd67b39f65437715e5253b1cd3bddb561014
 import { usePathname } from "next/navigation";
 import { z } from "zod";
 import { SignUpFormSchema } from "@/validators/signUp.validator";
@@ -66,9 +70,12 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   });
 
   const { mutate: loginMutate } = useMutation({ mutationFn: PostLogin });
+<<<<<<< HEAD
   const { mutate: signupMutate } = useMutation({
     mutationFn: PostSignUp,
   });
+=======
+>>>>>>> b434bd67b39f65437715e5253b1cd3bddb561014
 
   const pathname = usePathname();
 
