@@ -7,41 +7,55 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
-import { DeleteLogout, PostLogin, PostRefreshToken } from "@/api/auth";
+import {
+  DeleteLogout,
+  PostLogin,
+  PostRefreshToken,
+  PostSignUp,
+} from "@/api/auth";
 import { usePathname } from "next/navigation";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { z } from "zod";
+import { SignUpFormSchema } from "@/validators/signUp.validator";
+import { LoginFormSchema } from "@/validators/login.validator";
 
-//1. 만든다.
 interface AuthContext {
+  isLogin: boolean | null;
   handleClickLogout: () => void;
-  cookie: RequestCookie | undefined;
   loginMutate: UseMutateFunction<
     any,
     Error,
-    { email: string; password: string },
+    z.infer<typeof LoginFormSchema>,
+    unknown
+  >;
+  signupMutate: UseMutateFunction<
+    any,
+    Error,
+    z.infer<typeof SignUpFormSchema>,
     unknown
   >;
 }
 
 const initialAuth: AuthContext = {
+  isLogin: null,
   handleClickLogout: () => {},
-  cookie: undefined,
   loginMutate: () => {},
+  signupMutate: () => {},
 };
 
 const AuthContext = createContext<AuthContext>(initialAuth);
 
-//2. 사용한다.
 export const useAuth = () => useContext(AuthContext);
 
-//3. 범위를 지정한다.
-export const AuthProvider: React.FC<
-  PropsWithChildren<{ cookie: RequestCookie | undefined }>
-> = ({ children, cookie }) => {
+export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [isLogin, setIsLogin] = useState<boolean | null>(null);
   const { mutate: refreshTokenMutate } = useMutation({
     mutationFn: PostRefreshToken,
+    onSuccess: (res) => {
+      setIsLogin(res.result);
+    },
   });
 
   const { mutate: logoutMutate } = useMutation({
@@ -53,27 +67,27 @@ export const AuthProvider: React.FC<
 
   const { mutate: loginMutate } = useMutation({ mutationFn: PostLogin });
 
+  const { mutate: signupMutate } = useMutation({
+    mutationFn: PostSignUp,
+  });
+
   const pathname = usePathname();
 
-  const handleRefreshToken = useCallback(async () => {
-    refreshTokenMutate(cookie);
-  }, [refreshTokenMutate, cookie]);
+  const handleRefreshToken = useCallback(() => {
+    return refreshTokenMutate();
+  }, [refreshTokenMutate]);
 
   const handleClickLogout = useCallback(() => {
     logoutMutate();
   }, [logoutMutate]);
 
   useEffect(() => {
-    if (cookie) {
-      (async () => {
-        await handleRefreshToken();
-      })();
-    }
-  }, [pathname, cookie, handleRefreshToken]);
+    handleRefreshToken();
+  }, [pathname, handleRefreshToken]);
 
   const value = useMemo(
-    () => ({ handleClickLogout, cookie, loginMutate }),
-    [handleClickLogout, cookie, loginMutate],
+    () => ({ handleClickLogout, loginMutate, signupMutate, isLogin }),
+    [handleClickLogout, loginMutate, signupMutate, isLogin],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

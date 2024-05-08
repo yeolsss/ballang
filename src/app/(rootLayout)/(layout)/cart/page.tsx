@@ -1,7 +1,7 @@
 "use client";
 
 import { Title } from "@/components/Atoms";
-import EmptyCart from "@/app/(layout)/(layout)/cart/_components/emptyCart/EmptyCart";
+import EmptyCart from "@/app/(rootLayout)/(layout)/cart/_components/emptyCart/EmptyCart";
 import useCart from "@/hooks/Cart";
 import CartPage from "@/components/Pages/CartPage";
 
