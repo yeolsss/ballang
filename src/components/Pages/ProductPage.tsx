@@ -1,47 +1,49 @@
-import { ProductDetail } from "@/components/Organisms";
-import { GetProductData } from "@/api/products";
-import { ProductData } from "@/types/product.type";
+import { ProductCard } from "@/components/Organisms";
+import { Product } from "@/types/product.type";
+import { GetProductsData } from "@/api/products";
 
 interface Props {
-  productId: number;
+  brandId?: number;
 }
 
-async function ProductPage({ productId }: Props) {
-  const productData = (await GetProductData(productId)) as ProductData;
-  const { result } = productData;
+async function ProductPage({ brandId }: Props) {
+  const products = (await GetProductsData(brandId)) as Product[];
   return (
-    <>
-      <ProductDetail>
-        <ProductDetail.DetailImage
-          src={result.imgSrc}
-          alt={result.name}
-          width={150}
-          height={150}
-        />
-
-        <ProductDetail.ProductInfoTotal>
-          <ProductDetail.ProductInfoTotal.TitleLink
-            variant={"default"}
-            href={`/brands?brandId=${result.brandId}`}
-          >
-            {`${result.brand.nameKr} / ${result.brand.nameEn}`}
-          </ProductDetail.ProductInfoTotal.TitleLink>
-
-          <ProductDetail.ProductInfoTotal.Name>
-            {result.name}
-          </ProductDetail.ProductInfoTotal.Name>
-
-          <ProductDetail.ProductInfoTotal.ProductDetail
-            originPrice={result.originalPrice}
-            discountPrice={result.price}
-            deliveryType={result.deliveryType}
-            onlineStock={result.onlineStock}
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-8 gap-y-12">
+      {products.map((product) => (
+        <ProductCard key={product.id} productId={product.id}>
+          <ProductCard.ProductImage
+            src={product.imgSrc}
+            alt={product.name}
+            width={200}
+            height={200}
           />
+          <ProductCard.ProductInfo>
+            <ProductCard.ProductInfo.BrandName>
+              {product.brand.nameEn}
+            </ProductCard.ProductInfo.BrandName>
 
-          <ProductDetail.ProductInfoTotal.Button productId={result.id} />
-        </ProductDetail.ProductInfoTotal>
-      </ProductDetail>
-    </>
+            <ProductCard.ProductInfo.ProductDescription>
+              {product.name}
+            </ProductCard.ProductInfo.ProductDescription>
+
+            <ProductCard.ProductInfo.ProductPrices>
+              <ProductCard.ProductInfo.ProductPrices.OriginPrice
+                variant={"originPrice"}
+              >
+                {product.originalPrice}
+              </ProductCard.ProductInfo.ProductPrices.OriginPrice>
+
+              <ProductCard.ProductInfo.ProductPrices.DiscountPrice
+                variant={"default"}
+              >
+                {product.price}
+              </ProductCard.ProductInfo.ProductPrices.DiscountPrice>
+            </ProductCard.ProductInfo.ProductPrices>
+          </ProductCard.ProductInfo>
+        </ProductCard>
+      ))}
+    </div>
   );
 }
 
