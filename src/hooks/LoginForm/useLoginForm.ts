@@ -56,7 +56,7 @@ const useLoginForm = () => {
         },
       });
     },
-    [handleIsOpen, handleToggleDisable, loginMutate, router, toast],
+    [handleIsOpen, handleToggleDisable, loginMutate, toast],
   );
 
   return { register, handleSubmit, errors, OnSubmit, isDisabled };
