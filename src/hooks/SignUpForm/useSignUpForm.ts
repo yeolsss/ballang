@@ -6,7 +6,6 @@ import { SignUpFormSchema } from "@/validators/signUp.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
 import { useToast } from "@/components/UI/Toast/context/Toast";
-import { useRouter } from "next/navigation";
 import useDisable from "@/hooks/DisableState";
 import { useAuth } from "@/context/auth";
 
@@ -14,7 +13,6 @@ const useSignUpForm = () => {
   const { signupMutate } = useAuth();
   const { toast } = useToast();
   const [isDisabled, handleToggleDisable] = useDisable();
-  const router = useRouter();
 
   const {
     register,
@@ -41,7 +39,7 @@ const useSignUpForm = () => {
             duration: 5000,
           });
           handleToggleDisable(false);
-          router.push("/");
+          window.location.href = "/";
         },
         onError: () => {
           toast({
