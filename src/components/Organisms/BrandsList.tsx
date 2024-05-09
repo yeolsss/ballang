@@ -8,7 +8,7 @@ interface Props {
 
 async function BrandsList({ brandId }: Props) {
   const brands = (await GetBrandsData()) as BrandsData;
-  const { success, result } = brands;
+  const { result } = brands;
 
   return (
     <nav className="mx-auto max-w-screen-lg mb-16">
