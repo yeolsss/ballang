@@ -47,8 +47,6 @@ const useSignUpForm = () => {
             variant: "error",
             size: "lg",
             duration: 5000,
-            toastPositionY: "bottom",
-            toastPositionX: "right",
           });
           handleToggleDisable(false);
         },

@@ -51,6 +51,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isLogin, setIsLogin] = useState<boolean | null>(null);
+
   const { mutate: refreshTokenMutate } = useMutation({
     mutationFn: PostRefreshToken,
     onSuccess: (res) => {

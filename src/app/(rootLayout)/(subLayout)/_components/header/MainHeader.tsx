@@ -1,6 +1,6 @@
 import Link from "next/link";
-import HeaderAuth from "@/app/(rootLayout)/(layout)/_components/auth";
-import HeaderBrands from "@/app/(rootLayout)/(layout)/_components/brands";
+import HeaderAuth from "@/app/(rootLayout)/(subLayout)/_components/auth";
+import HeaderBrands from "@/app/(rootLayout)/(subLayout)/_components/brands";
 
 function MainHeader() {
   return (
